@@ -1,1 +1,117 @@
+import numpy as np
+import math
+from scipy.integrate import solve_ivp
+import matplotlib.pyplot as plt
 
+
+# Define the ODE system
+def cAMP_signaling(t, x, param):
+    cAMP, AMP, PKA, C1, PDE4 = x
+
+    # Parameters (using underscores instead of commas)
+    kdeg = param['kdeg']
+    km_PKA = param['km_PKA']
+    kon_PDE = param['kon_PDE']
+    k12on_PDE = param['k12on_PDE']
+    kon_C1 = param['kon_C1']
+
+    #cAMP input
+    def cAMPinput(t):
+      if t < 300:
+        return 0.001 * t
+      else:
+        return 0.3
+
+#0.45 * np.abs(np.sin(0.015*t)) * (0.9998**t) + 0.3
+    # ODEs (corrected syntax)
+    dAMP = (kon_PDE + (21.76*2*C1)/(1.3+2*C1)) * cAMP * PDE4
+
+    dcAMP =-(kon_PDE + k12on_PDE) * cAMP * PDE4 - 4 * kon_C1 * ((PKA * cAMP**1.6) / (km_PKA**1.6 + cAMP**1.6))+ 4 * kdeg * C1
+
+
+    dC1 = kon_C1 * ((PKA * cAMP**1.6) / (km_PKA**1.6 + cAMP**1.6)) - kdeg * C1
+    dPKA = -kon_C1 * ((PKA * cAMP**1.6) / (km_PKA**1.6 + cAMP**1.6)) + kdeg * C1
+    dPDE4 = 0
+
+    return [dcAMP, dAMP, dPKA, dC1, dPDE4]
+
+# Set parameters (using consistent underscore naming)
+param = {
+    'kdeg': 0.21,
+    'km_PKA': 5.2,
+    'kon_PDE': 0.15,
+    'kon_C1': 0.0261,
+    'k12on_PDE': 1.3,
+}
+
+# Simulation time
+t0, tf = 0, 400
+
+# Initial conditions [cAMP, AMP, PKA, C1, PDE4]
+x0 = [0.3, 0, 0.173, 0, 0.7]
+
+# Solve the ODE system
+solution = solve_ivp(
+    cAMP_signaling,
+    [t0, tf],
+    x0,
+    args=(param,),
+    t_eval=np.linspace(t0, tf, 400),
+    rtol=1e-10,
+    atol=1e-12
+)
+T, X = solution.t, solution.y.T
+
+X
+
+import matplotlib.pyplot as plt
+
+# Assuming T and X are already defined
+
+fig, axs = plt.subplots(5, 1, figsize=(10, 20))  # Create a 5x1 grid of subplots
+
+# Plot 1: cAMP
+axs[0].plot(T, X[:, 0], 'b-')
+axs[0].set_xlabel('Time')
+axs[0].set_ylabel('Concentration')
+axs[0].set_title('cAMP Over Time')
+axs[0].legend(['cAMP'], loc='upper left', frameon=False)
+axs[0].grid()
+
+# Plot 2: AMP
+axs[1].plot(T, X[:, 1], 'b-')
+axs[1].set_xlabel('Time')
+axs[1].set_ylabel('Concentration')
+axs[1].set_title('AMP Over Time')
+axs[1].legend(['AMP'], loc='upper left', frameon=False)
+axs[1].grid()
+
+# Plot 3: PKA
+axs[2].plot(T, X[:, 2], 'b-')  # Corrected index for PKA
+axs[2].set_xlabel('Time')
+axs[2].set_ylabel('Concentration')
+axs[2].set_title('PKA Over Time')
+axs[2].legend(['PKA'], loc='upper left', frameon=False)
+axs[2].grid()
+
+# Plot 4: C1
+axs[3].plot(T, X[:, 3], 'b-')  # Corrected index for C1
+axs[3].set_xlabel('Time')
+axs[3].set_ylabel('Concentration')
+axs[3].set_title('C1 Over Time')
+axs[3].legend(['C1'], loc='upper left', frameon=False)
+axs[3].grid()
+
+# Plot 5: PDE4
+axs[4].plot(T, X[:, 4], 'b-')  # Corrected index for PDE4
+axs[4].set_xlabel('Time')
+axs[4].set_ylabel('Concentration')
+axs[4].set_title('PDE4 Over Time')
+axs[4].legend(['PDE4'], loc='upper left', frameon=False)
+axs[4].grid()
+
+# Adjust layout to avoid overlap
+plt.tight_layout()
+
+# Show the plots
+plt.show()
