@@ -15,16 +15,6 @@ def cAMP_signaling(t, x, param):
     k12on_PDE = param['k12on_PDE']
     kon_C1 = param['kon_C1']
 
-    #cAMP input
-    #def cAMPinput(t):
-      #return 0.3
-      #return 0.45 * abs(math.sin(0.015 * t)) * (0.9998 * t) + 0.3
-      #if t < 300:
-       # return 0.001 * t
-      #else:
-       # return 0.3
-
-#0.45 * np.abs(np.sin(0.015*t)) * (0.9998**t) + 0.3
     # ODEs (corrected syntax)
     dAMP = (kon_PDE + (21.76*2*C1)/(1.3+2*C1)) * cAMP * PDE4
 
@@ -43,7 +33,7 @@ param = {
     'km_PKA': 5.2,
     'kon_PDE': 0.15,
     'kon_C1': 0.0261,
-    'k12on_PDE': 1.3,
+    'k12on_PDE': 0,
 }
 
 # Simulation time
