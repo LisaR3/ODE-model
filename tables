@@ -1,0 +1,108 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage[landscape,margin=1cm]{geometry}
+\usepackage{adjustbox}
+
+\begin{document}
+
+\begin{table}[h!]
+\caption{Overview of reaction species, partial differential equations, and initial concentrations}
+\begin{adjustbox}{width=\textwidth,totalheight=\textheight,keepaspectratio}
+\begin{tabular}{cccc}
+\toprule
+\textbf{Species} & \textbf{Partial Differential Equations} & \textbf{Initial concentration ($\mu$M)}  & \textbf{Source} \\
+\midrule
+5'AMP & 
+$\frac{\partial 5'AMP}{\partial t} = (k_{\text{on,PDE}} + k_{12\,\text{on,PDE}}) \times cAMP \times PDE4 + D \frac{\partial^2 5'AMP}{\partial x^2}$ 
+& 0 & (1) \\
+cAMP & 
+$\frac{\partial cAMP}{\partial t} = -(k_{\text{on,PDE}} + k_{12\,\text{on,PDE}}) \times cAMP \times PDE4 - 4k_{\text{on},C_1} \times \frac{PKA \times cAMP^{1.6}}{K_m^{PKA} + cAMP^{1.6}} +$
+& 0.3 & (1) \\
+& production $+ D \frac{\partial^2 cAMP}{\partial x^2} + 4 \times k_{deg} \times C_1$ &\\
+$C_1$ & 
+$\frac{\partial C_1}{\partial t} = k_{\text{on},C_1} \times \frac{PKA \times cAMP^{1.6}}{K_m^{PKA} + cAMP^{1.6}} - k_{deg} \times C_1$
+& 0 &(1)\\
+PKA & 
+$\frac{\partial PKA}{\partial t} = -k_{\text{on},C_1} \times \frac{PKA \times cAMP^{1.6}}{K_m^{PKA} + cAMP^{1.6}} + k_{deg} \times C_1$
+& 0.173 \\
+PDE4 & 
+constant
+& 0.7 & (1) \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\end{document}
+
+
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage[landscape,margin=1cm]{geometry}
+\usepackage{adjustbox}
+\usepackage[version=4]{mhchem} 
+
+\begin{document}
+
+\begin{table}[h!]
+\caption{Overview of Reactions and Kinetic Parameters}
+\begin{adjustbox}{width=\textwidth,totalheight=\textheight,keepaspectratio}
+\begin{tabular}{cccc}
+\toprule
+\textbf{Reactions} & \textbf{Rate Constants} & \textbf{Value}  & \textbf{Source} \\
+\midrule
+\ce{cAMP ->[k_{on,PDE}, k_{12on,PDE}, PDE] {5'AMP}}
+& k_{12\,\text{on,PDE}}
+& 0.15 $\mu$M^{-1}s^{-1} & (1) \\
+
+\ce{PKA + 4 cAMP ->[k_{on,C1}] C1}
+& k_{on,C1}
+& 0.0261 s^{-1} & (1) \\
+
+\ce{C1 ->[k_{deg}] PKA + 4 cAMP}
+& k_{deg}
+& 0.21 s^{-1} & (1) \\
+
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\end{document}
+
+
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage[landscape,margin=1cm]{geometry}
+\usepackage{adjustbox}
+\usepackage[version=4]{mhchem} 
+
+\begin{document}
+
+\begin{table}[h!]
+\caption{Kinematic Parameters for PDE4 Activity Modeling}
+\begin{adjustbox}{width=\textwidth,totalheight=\textheight,keepaspectratio}
+\begin{tabular}{cccccc}
+\toprule
+Parameter & K_M($\mu$M) & V_{max}($\mu$M^{-1}s^{-1}) & V_{max}(\%) & References & \\
+\midrule
+ k_{on,PDE} & Baseline PDE4-mediated cAMP degradation rate & - & 0.15 & - & \\
+
+k_{12on,PDE} & PDE4 long PKA-phosphorylated & 1.3 & 21.76 & 272 & \\
+
+
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\end{document}
